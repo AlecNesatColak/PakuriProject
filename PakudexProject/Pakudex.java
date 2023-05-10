@@ -96,14 +96,84 @@ public class Pakudex {
     public boolean evolveSpecies(String species) {
         for (int i = 0; i < pakudex.length; i++) {
             if (pakudex[i].getSpecies().equals(species)) {
-                pakudex[i].evolve();
-                System.out.println(species + " has evolved!");
-                System.out.println();
-                return true;
+                if(pakudex[i].getLevel() >= 25) {
+                    pakudex[i].evolve();
+                    System.out.println(species + " has evolved!");
+                    System.out.println();
+                    return true;
+                } else {
+                    System.out.println("Pakuri is unable to evolve, it must reach level 25 or greater.");
+                    System.out.println(pakudex[i].getSpecies() + "'s level is currently " + pakudex[i].getLevel());
+                    System.out.println();
+                    return false;
+                }  
             }
         }
         System.out.println("Error: No such Pakuri!");
         return false;
     }
 
+    public void duel(String speciesName1, String speciesName2) {
+        Pakuri pakuri1 = null;
+        Pakuri pakuri2 = null;
+    
+        // find the Pakuri objects with the given species names
+        for (int i = 0; i < pakudex.length; i++) {
+            if (pakudex[i] != null && pakudex[i].getSpecies().equals(speciesName1)) {
+                pakuri1 = pakudex[i];
+            }
+            if (pakudex[i] != null && pakudex[i].getSpecies().equals(speciesName2)) {
+                pakuri2 = pakudex[i];
+            }
+        }
+    
+        // check if both Pakuri objects were found
+        if (pakuri1 == null || pakuri2 == null) {
+            System.out.println("Error: Could not find Pakuri with given species names.");
+            return;
+        }
+    
+        System.out.println("DUEL STARTED!");
+        System.out.println(pakuri1.getSpecies() + " vs " + pakuri2.getSpecies());
+        System.out.println();
+    
+        int hp1 = 100;
+        int hp2 = 100;
+    
+        // loop until one Pakuri's HP reaches 0 or below
+        while (hp1 > 0 && hp2 > 0) {
+            // Pakuri 1 attacks Pakuri 2
+            int damage1 = pakuri1.getAttack();
+            int defense2 = pakuri2.getDefense();
+            int damageDealt1 = damage1 - defense2;
+            hp2 -= damageDealt1;
+            if (damageDealt1 < 0) {
+                damageDealt1 = 0;
+            }
+            if (hp2 <= 0) {
+                System.out.println(pakuri2.getSpecies() + " fainted.");
+                System.out.println();
+                pakuri1.setLevel();
+                break;
+            }
+    
+            // Pakuri 2 attacks Pakuri 1
+            int damage2 = pakuri2.getAttack();
+            int defense1 = pakuri1.getDefense();
+            int damageDealt2 = damage2 - defense1;
+            hp1 -= damageDealt2;
+            if (damageDealt2 < 0) {
+                damageDealt2 = 0;
+            }
+            if (hp1 <= 0) {
+                System.out.println(pakuri1.getSpecies() + " fainted.");
+                System.out.println();
+                pakuri2.setLevel();
+                break;
+            }
+        }
+        System.out.println("DUEL FINISHED!");
+        System.out.println();
+    }
+    
 }
