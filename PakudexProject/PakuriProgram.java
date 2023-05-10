@@ -24,6 +24,7 @@ public class PakuriProgram {
             System.out.println("4. Evolve Pakuri");
             System.out.println("5. Sort Pakuri");
             System.out.println("6. Exit");
+            System.out.println("7. Duel");
             System.out.println("");
             System.out.print("What would you like to do? ");
             int menuOption = scanner.nextInt();
@@ -76,7 +77,13 @@ public class PakuriProgram {
             } else if (menuOption == 6) {
                 System.out.println("Thanks for using Pakudex! Bye!");
                 program = false;
-            }
+            } else if (menuOption == 7) {
+                System.out.print("Choose first pakuri for battle: ");
+                String species1 = scanner.next();
+                System.out.print("Choose second pakuri for battle: ");
+                String species2 = scanner.next();
+                pakudex.duel(species1, species2);
+            } 
         }
         scanner.close();
     }
